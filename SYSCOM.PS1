@@ -1,11 +1,51 @@
-$OutputEncoding = [System.Text.Encoding]::UTF8
+﻿$OutputEncoding = [System.Text.Encoding]::UTF8
+
+Add-Type -AssemblyName System.Windows.Forms
+
+function ADMINMESSAGE {
+    [System.Windows.Forms.MessageBox]::Show("Per favore, avvia il programma come amministratore.", "Permessi di amministratore richiesti", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
+}
 
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
 
 if (-not $isAdmin) {
-    Start-Process pwsh.exe -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    try {
+        $proc = Start-Process pwsh.exe -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs -PassThru
+        $proc.WaitForExit()
+        if ($proc.ExitCode -ne 0) {
+            ADMINMESSAGE
+        }
+    } catch {
+        ADMINMESSAGE
+    }
     Exit
 }
+
+# Il resto del tuo script va qui
+
+
+# Definisce una funzione per cambiare il titolo della finestra della console
+function Set-ConsoleTitle {
+    param (
+        [string]$Title
+    )
+    
+    $typeDefinition = @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern bool SetConsoleTitle(string lpConsoleTitle);
+}
+"@
+    
+    Add-Type -TypeDefinition $typeDefinition
+    [Win32]::SetConsoleTitle($Title)
+}
+
+# Chiama la funzione con il titolo desiderato
+Set-ConsoleTitle -Title "SYSCOM"
+
 function CTRLPause {
     do {
         $key = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
@@ -23,7 +63,7 @@ if ($currentDate.Day -eq 2 -and $currentDate.Month -eq 6) {
 function DSK_SO {
     Clear-Host
     Write-Host ""
-    Write-Host ""
+    Write-Host "" 
     Write-Host ""
     Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
     Get-Content ".\SYSCOM\Banners\DSK_SO"
@@ -38,18 +78,7 @@ function DSK_SO {
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
     Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-##    Write-Host "┃1.  SFC            (Analizza integrità file di sistema)        ┃" funzione SO
-##    Write-Host "┃2.  CHKDSK (f)     (Controlla disco e visualizza rapporto)     ┃" funzione DSK nella funzione DSK-SO
-##    Write-Host "┃3.  CHKDSK (r)     (Individua settori danneggiati)             ┃" funzione DSK nella funzione DSK-SO
-##    Write-Host "┃4.  DISM           (Manutenzione immagini di sistema)          ┃" funzione SO nella funzione DSK-SO
-##    Write-Host "┃5.  POWERCFG (e)   (Report energia del computer)               ┃" funzione HARDWARE nella funzione DSK-SO
-##    Write-Host "┃6.  POWERCFG (b)   (Report stato batteria)                     ┃" funzione HARDWARE nella funzione DSK-SO
-##    Write-Host "┃7.  MdSched.exe    (Diagnostica memoria centrale)              ┃" funzione HARDWARE nella funzione DSK-SO
-##    Write-Host "┃8.  cleanmgr.exe   (Cancella file non necessari dal disco)     ┃" funzione per la cancellazionenella funzione DSK dei file nella funzione DSK-SO
-##    Write-Host "┃9.  dfrgui.exe     (Deframmenta e ottimizza unità)             ┃" funzione DSK nella funzione DSK-SO
 #    Write-Host "┃10. recdisc.exe     (Strumento di riparazione del disco)        ┃" VA NELLA PARTE DI BACKUP IN UNA NUOVA FUNZIONE NELLA FUNZIONE SECURE
-##    Write-Host "┃11. dxdiag.exe     (Strumento di diagnostica Direct X)         ┃" funzione HARDWARE nella funzione DSK-SO
-##    Write-Host "┃12. Win 11         (Strumenti Windows 11)                      ┃" funzione SO nella funzione DSK-SO
     $MDeSO = Read-Host " "
     switch ($MDeSO) {
         "0" {
@@ -70,77 +99,11 @@ function DSK_SO {
         "3" {
             HARDWARE
         }
-        
-#        "1" { 
-#            Clear-Host
-#            sfc /scannow
-#            Pause
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "2" {
-#            Clear-Host
-#            chkdsk /f
-#            Pause
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "3" {
-#            Clear-Host
-#            chkdsk /r
-#            Pause
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "4" {
-#            Clear-Host
-#            dism /online /cleanup-image /restorehealth /Loglevel:2
-#            Start-Sleep -Seconds 1
-#            Pause     
-#            DSK_SO
-#        }
-#        "5" {
-#            Clear-Host
-#            powercfg /energy
-#            Pause
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "6" {
-#            Clear-Host
-#            powercfg /batteryreport
-#            Pause
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "7" {
-#            Invoke-Expression "$env:windir\System32\MdSched.exe"
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "8"{
-#            Invoke-Expression "$env:windir\System32\cleanmgr.exe"
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "9" {
-#            Invoke-Expression "$env:windir\System32\dfrgui.exe"
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "10" {
-#            Invoke-Expression "$env:windir\System32\recdisc.exe"
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "11" {
-#            Invoke-Expression "$env:windir\System32\dxdiag.exe"
-#            Start-Sleep -Seconds 1     
-#            DSK_SO
-#        }
-#        "12" {
-#            WINDOWS11
-#        }
+        "10" {
+            Invoke-Expression "$env:windir\System32\recdisc.exe"
+            Start-Sleep -Seconds 1     
+            DSK_SO
+        }
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
         }
@@ -160,7 +123,7 @@ function SO {
     Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━        ┃"
     Write-Host "┃1.  SFC            (Analizza integrità file di sistema)        ┃" 
     Write-Host "┃2.  DISM           (Manutenzione immagini di sistema)          ┃"
-    Write-Host "┃3.  Win 11         (Strumenti Windows 11)                      ┃"
+    Write-Host "┃3.  Windows        (Immagini di Windows Ufficiali)             ┃"
     Write-Host "┃                                                               ┃"
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
@@ -441,16 +404,17 @@ function WINDOWS11 {
     Get-Content ".\SYSCOM\Banners\WINDOWS11.ANS"
     Write-Host "┃                                                               ┃"
     Write-Host "┃                                                               ┃"
-    Write-Host "┃NUM.   COMANDO     (DESCRIZIONE COMANDO)                       ┃"
-    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       ┃"
-    Write-Host "┃1.  ISO Ufficiale    (Scarica Windows 11 ufficiale)            ┃"
-    Write-Host "2.  TPM              (Compatibilità Windows 11)                 ┃"
-    Write-Host "3.  Guida            (Guida compatibilità Windows 11)"
-    Write-Host "4.  Scarica software (Scarica versioni Windows)"
-    Write-Host "5.  Scarica ISO      (Scarica ISO Windows 10/11)"
-    Write-Host "0.  Esci"
-    Write-Host ""
-    $WIN11 = Read-Host "Inserisci il numero per l'operazione"
+    Write-Host "┃NUM.   COMANDO       (DESCRIZIONE COMANDO)                     ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━              ┃"
+    Write-Host "┃1.  ISO              (ISO scaricabili di Windows)              ┃"
+    Write-Host "┃2.  TPM              (Utilità per rimuovere il TPM)            ┃"
+    Write-Host "┃3.  Guida            (Guida per la compatibilità Windows 11)   ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+
+    $WIN11 = Read-Host " "
     
 
     switch ($WIN11) {
@@ -461,9 +425,7 @@ function WINDOWS11 {
            SO
         }
         "1" {
-            Start-Process https://www.microsoft.com/it-it/software-download/windows11
-            Start-Sleep -Seconds 1     
-            WINDOWS11
+            ISOWIN11
         }
         "2" {
             Start-Process https://github.com/harsha2koo/W11x64.bat/blob/main/W11_x64-TPM.cmd
@@ -471,27 +433,7 @@ function WINDOWS11 {
             WINDOWS11
         }
         "3" {
-            Clear-Host
-            Write-Host "1. Scarica il media creation tool dal sito della Microsoft mediante l'opzione 1"
-            Write-Host "2. Scarica l'eseguibile TPM mediante l'opzione 2"
-            Write-Host "3. Dopo aver scaricato i programmi crea l'immagine ISO di Windows 11"
-            Write-Host "4. Montare per la prima volta la ISO premendoci sopra con il tasto destro e cliccando 'Monta'"
-            Write-Host "5. Chiudere l'immagine montata e eseguire l'eseguibile TPM"
-            Write-Host "6. Dopo l'avviso di corretta eliminazione del TPM rimontare la ISO"
-            Write-Host "7. Premere su setup.exe e proseguire con l'istallazione guidata"
-            pause
-            Start-Sleep -Seconds 1     
-            WINDOWS11
-        }
-        "4" {
-            Start-Process https://www.microsoft.com/it-it/software-download/
-            Start-Sleep -Seconds 1
-            WINDOWS11
-        }
-        "5" {
-            Start-Process https://uupdump.net
-            Start-Sleep -Seconds 1
-            WINDOWS11
+            GUIDAWIN11
         }
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
@@ -500,26 +442,142 @@ function WINDOWS11 {
     
 }
 
+function ISOWIN11 {
+    Clear-Host
+    Write-Host ""
+    Write-Host ""
+    Write-Host ""
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Get-Content ".\SYSCOM\Banners\ISO"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO       (DESCRIZIONE COMANDO)                     ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            ┃"
+    Write-Host "┃1.  ISO Ufficiale    (Scarica Windows 11 ufficiale)            ┃"
+    Write-Host "┃2.  Windows          (Scarica versioni di Windows precedenti)  ┃"
+    Write-Host "┃3.  Scarica ISO      (ISO dai server della Microsoft)          ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $ISOWIN11 = Read-Host " "
+    switch ($ISOWIN11) {
+        "0" {
+            WINDOWS11 
+        }
+        "" {
+           WINDOWS11
+        }
+        "1" {
+            Start-Process https://www.microsoft.com/it-it/software-download/windows11
+            Start-Sleep -Seconds 1     
+            ISOWIN11
+        }
+        "2" {
+            Start-Process https://www.microsoft.com/it-it/software-download/
+            Start-Sleep -Seconds 1
+            ISOWIN11
+        }
+        "3" {
+            Start-Process https://uupdump.net
+            Start-Sleep -Seconds 1
+            ISOWIN11
+        }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+
+function GUIDAWIN11 {
+    Clear-Host
+    Write-Host "=============================================="
+    Write-Host " 1. Scarica il media creation tool dal sito  "
+    Write-Host "    della Microsoft mediante l'opzione 1.    "
+    Write-Host "    Questo strumento ti permetterà di creare "
+    Write-Host "    un'immagine ISO di Windows 11.           "
+    Write-Host "=============================================="
+    Write-Host ""
+    pause
+    
+    Clear-Host
+    Write-Host "=============================================="
+    Write-Host " 2. Scarica l'eseguibile TPM mediante         "
+    Write-Host "    l'opzione 2. Questo programma ti servirà "
+    Write-Host "    per modificare le impostazioni TPM        "
+    Write-Host "    del tuo sistema.                          "
+    Write-Host "=============================================="
+    Write-Host ""
+    pause
+    
+    Clear-Host
+    Write-Host "=============================================="
+    Write-Host " 3. Dopo aver scaricato i programmi, crea     "
+    Write-Host "    l'immagine ISO di Windows 11 seguendo     "
+    Write-Host "    le istruzioni del media creation tool.    "
+    Write-Host "=============================================="
+    Write-Host ""
+    pause
+    
+    Clear-Host
+    Write-Host "=============================================="
+    Write-Host " 4. Monta per la prima volta la ISO facendo   "
+    Write-Host "    clic destro su di essa e selezionando     "
+    Write-Host "    'Monta'.                                  "
+    Write-Host "=============================================="
+    Write-Host ""
+    pause
+    
+    Clear-Host
+    Write-Host "=============================================="
+    Write-Host " 5. Chiudi l'immagine montata e esegui        "
+    Write-Host "    l'eseguibile TPM. Segui le istruzioni     "
+    Write-Host "    sullo schermo per eliminare il TPM.       "
+    Write-Host "=============================================="
+    Write-Host ""
+    pause
+    
+    Clear-Host
+    Write-Host "=============================================="
+    Write-Host " 6. Dopo l'avviso di corretta eliminazione    "
+    Write-Host "    del TPM, rimonta la ISO facendo clic      "
+    Write-Host "    destro su di essa e selezionando 'Monta'. "
+    Write-Host "=============================================="
+    Write-Host ""
+    pause
+    
+    Clear-Host
+    Write-Host "=============================================="
+    Write-Host " 7. Apri il file setup.exe dalla ISO montata  "
+    Write-Host "    e segui le istruzioni dell'installazione  "
+    Write-Host "    guidata per completare l'installazione    "
+    Write-Host "    di Windows 11.                            "
+    Write-Host "=============================================="
+    Write-Host ""
+    pause
+
+    WINDOWS11
+}
+
 function GestioneReteApplicazioni {
     Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
     Get-Content ".\SYSCOM\Banners\RETEAPP"
-    Write-Host "`n`nNUM.   COMANDO      (DESCRIZIONE COMANDO)"
-    Write-Host "-------------------------------------------"
-    Write-Host "1.     WINGET       (Installa/aggiorna app)"
-    Write-Host "2.     appwiz.cpl   (Disistalla o Modifica programma)"
-    Write-Host "3.     taskmgr.exe  (Gestione attività)"
-    Write-Host "4.     msconfig.exe (Config. di sistema)"
-    Write-Host "5.     NETSH        (Pulisce winsock)"
-    Write-Host "6.     flushdns     (Svuota cache, reimposta registro DNS)"
-    Write-Host "7.     ICiRA        (Impostazioni condivisione in rete avanzate)"
-    Write-Host "8.     net use      (Elimina connessioni dischi di rete attive)"
-    Write-Host "9.     shrpubw.exe  (Creazione guidata cartella condivisa)"
-    Write-Host "11.    Copilot      (Strumenti Copilot)"
-    Write-Host "0.     Esci"
-    Write-Host ""
-    $GRA = Read-Host "Inserisci il numero per l'operazione"
-    
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO     (DESCRIZIONE COMANDO)                       ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━        ┃"
+    # Write-Host "3.     taskmgr.exe  (Gestione attività)"
+    # Write-Host "4.     msconfig.exe (Config. di sistema)"
+    Write-Host "┃1.    App          (Strumenti per pachetti e programmi)        ┃"
+    Write-Host "┃2.    NET          (Strumenti per il network e dischi di rete) ┃"
+    Write-Host "┃3.    Copilot      (Strumenti Copilot)                         ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
 
+    $GRA = Read-Host " "
     switch ($GRA) {
         "0" {
            .\SYSCOM.PS1 
@@ -528,60 +586,278 @@ function GestioneReteApplicazioni {
            .\SYSCOM.PS1 
         }
         "1" {
+            App
+        }
+        "2" {
+            NET_Menu
+        }
+        "3" {
+            COPILOT
+        }
+        # "3" {
+            # Invoke-Expression "$env:windir\System32\taskmgr.exe"
+            # Start-Sleep -Seconds 1     
+            # GestioneReteApplicazioni
+        # }
+        # "4" {
+            # Invoke-Expression "$env:windir\System32\msconfig.exe"
+            # Start-Sleep -Seconds 1     
+            # GestioneReteApplicazioni
+        # }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+ function App {
+    Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Get-Content ".\SYSCOM\Banners\APP"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO       (DESCRIZIONE COMANDO)                     ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            ┃"
+    Write-Host "┃1.     WINGET        (Strumenti utili per pachetti)            ┃"
+    Write-Host "┃2.     DISINSTALLA   (Disistalla o modifica programma)         ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $APP = Read-Host " "
+    switch ($APP) {
+        "0" {
+            GestioneReteApplicazioni
+        }
+         "" {
+            GestioneReteApplicazioni
+        }
+        "1" {
+            WG
+        }
+        "2" {
+            DISINSTALLA
+        }
+        # "2" {
+        #     Invoke-Expression "$env:windir\System32\appwiz.cpl"
+        #     Start-Sleep -Seconds 1     
+        #     App
+        # }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+
+function DISINSTALLA {
+}
+
+function WG {
+    Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Get-Content ".\SYSCOM\Banners\WINGET"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO       (DESCRIZIONE COMANDO)                     ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            ┃"
+    Write-Host "┃1.     INSTALLA      (Installa un pachetto)                    ┃"
+    Write-Host "┃2.     AGGIORNA      (Aggiorna i pachetti installati)          ┃"
+    Write-Host "┃3.     LISTA                                                   ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $WINGET = Read-Host " "
+    switch ($WINGET) {
+        "0" {
+            App
+        }
+         "" {
+            App
+        }
+        "1" {
+            Clear-Host
+            .\SYSCOM\Program\WINSTALL.PS1
+            Pause
+            Start-Sleep -Seconds 1
+            WG
+        }
+        "2" {
             Clear-Host
             winget upgrade --all --include-unknown
             Pause
             Start-Sleep -Seconds 1     
-            GestioneReteApplicazioni
-        }
-        "2" {
-            Invoke-Expression "$env:windir\System32\appwiz.cpl"
-            Start-Sleep -Seconds 1     
-            GestioneReteApplicazioni
+            WG
         }
         "3" {
-            Invoke-Expression "$env:windir\System32\taskmgr.exe"
-            Start-Sleep -Seconds 1     
+            WGLIST
+        }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+
+function WGLIST {
+    Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Get-Content ".\SYSCOM\Banners\WINGET_LIST"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO       (DESCRIZIONE COMANDO)                     ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ┃"
+    Write-Host "┃1.     Lista         (Crea una lista dei pachetti installati)  ┃"
+    Write-Host "┃2.     Esporta       (Esporta elenco dei pacchetti installati  ┃"
+    Write-Host "┃                     da  poter  reinstallare successivamente)  ┃"
+    Write-Host "┃3.     Importa       (Installa  tutti i  pachetti da un  file  ┃"
+    Write-Host "┃                                   esportato  in  precedenza)  ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $WGLIST = Read-Host " "
+    switch ($WGLIST) {
+        "0" {
+            WG
+        }
+         "" {
+            WG
+        }
+        "1" {
+            Clear-Host
+            .\SYSCOM\Program\WGLIST.PS1
+            Pause
+            Start-Sleep -Seconds 1
+            WGLIST
+        }
+        "2" {
+            Clear-Host
+            .\SYSCOM\Program\WGEXP.PS1
+            Pause
+            Start-Sleep -Seconds 1
+            WGLIST
+        }
+        "3" {
+            Clear-Host
+            .\SYSCOM\Program\WGIMP.PS1
+            Pause
+            Start-Sleep -Seconds 1
+            WGLIST
+        }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+
+function NET_Menu {
+    Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Get-Content ".\SYSCOM\Banners\NET"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO                    (DESCRIZIONE COMANDO)        ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       ┃"
+    Write-Host "┃1.     Pulizia                    (Pulizia del Network)        ┃"
+    Write-Host "┃2.     Condivisione Cartelle      (Imp. Cartelle Condivise)    ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $NET = Read-Host " "
+    switch ($NET) {
+        "0" {
             GestioneReteApplicazioni
         }
-        "4" {
-            Invoke-Expression "$env:windir\System32\msconfig.exe"
-            Start-Sleep -Seconds 1     
+         "" {
             GestioneReteApplicazioni
         }
-        "5" {
+        "1" {
+            PULIZIANET
+        }
+        "2" {
+            CARTCONDIVISE
+        }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+
+function PULIZIANET {
+    Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Get-Content ".\SYSCOM\Banners\PULIZIA_NET"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO      (DESCR. COMANDO)                           ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                          ┃"
+    Write-Host "┃1.     NETSH        (Pulisce winsock)                          ┃"
+    Write-Host "┃2.     flushdns     (Svuota cache, reimposta registro DNS)     ┃"
+    Write-Host "┃3.     net use      (Elimina connessioni dischi di rete attive)┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $PULIZIANET = Read-Host " "
+    switch ($PULIZIANET) {
+        "0" {
+            NET_Menu
+        }
+         "" {
+            NET_Menu
+        }
+        "1" {
             Clear-Host
             netsh winsock reset
             Pause
-            Start-Sleep -Seconds 1     
-            GestioneReteApplicazioni
+            Start-Sleep -Seconds 1  
+            PULIZIANET
         }
-        "6" {
+        "2" {
             Clear-Host
             ipconfig /flushdns
             Pause
             Start-Sleep -Seconds 1     
-            GestioneReteApplicazioni
+            PULIZIANET
         }
-        "7" {
+        "3" {
+            Clear-Host
+            net use * /delete
+            Pause
+            Start-Sleep -Seconds 1  
+            PULIZIANET
+        }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+
+function CARTCONDIVISE {
+    Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Get-Content ".\SYSCOM\Banners\CARTCONDIVISE"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO      (DESCRIZIONE COMANDO)                      ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       ┃"
+    Write-Host "┃1.     ICiRA        (Imp. condivisione in rete avanzate)       ┃"
+    Write-Host "┃2.     shrpubw.exe  (Creazione guidata cartella condivisa)     ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $CARTELLECONDIVISE = Read-Host " "
+    switch ($CARTELLECONDIVISE) {
+        "1" {
             control.exe /name Microsoft.NetworkAndSharingCenter /page Advanced
             Start-Sleep -Seconds 1     
             GestioneReteApplicazioni
         }
-        "8" {
-            Clear-Host
-            net use * /delete
-            Pause
-            Start-Sleep -Seconds 1     
-            GestioneReteApplicazioni
-        }
-        "9" {
+        "2" {
             shrpubw.exe
             Start-Sleep -Seconds 1     
             GestioneReteApplicazioni
-        }
-        "11" {
-            COPILOT
         }
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
@@ -591,16 +867,16 @@ function GestioneReteApplicazioni {
 
 function COPILOT {
     Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
     Get-Content ".\SYSCOM\Banners\COPILOT.ANS"
-    Write-Host "`n`nNUM.   COMANDO              (DESCRIZIONE COMANDO)"
-    Write-Host "--------------------------------------------------"
-    Write-Host "1.     Avvia Copilot        (Avvia url di Copilot)"
-    Write-Host "2.     Attiva Copilot       (Imposta IsUserEligible a 1)"
-    Write-Host "3.     Disattiva Copilot    (Imposta IsUserEligible a 0)"
-    Write-Host "4.     ViVe Tool            (Abilita funzionalità sperimentali di Windows)"
-    Write-Host "0.     Esci"
-    Write-Host ""
-    $CPLT = Read-Host "Inserisci il numero per l'operazione"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    $CPLT = Read-Host " "
     switch ($CPLT) {
         "0" {
            GestioneReteApplicazioni 
@@ -636,20 +912,26 @@ function COPILOT {
 
 function SicurezzaProtezione {
     Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
     Get-Content ".\SYSCOM\Banners\SECURE"
-    Write-Host "`n`nNUM.   COMANDO           (DESCRIZIONE COMANDO)"
-    Write-Host "--------------------------------------------------------"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃NUM.   COMANDO                    (DESCRIZIONE COMANDO)        ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       ┃"
     Write-Host "1.  wscui.cpl            (Sicurezza e manutenzione)"
-    Write-Host "2.  hotplug.dll          (Rimozione sicura dell`hardware)"
+#    Write-Host "2.  hotplug.dll          (Rimozione sicura dell`hardware)" Va nella parte HARDWARE DI DSK_SO
     Write-Host "3.  sigverif.exe         (Verifica firma file)"
     Write-Host "4.  MRT.exe              (Strumento di rimozione malware Microsoft Windows)"
     Write-Host "5.  SPP                  (Protezione Sistema)"
     Write-Host "6.  Imp. di Criptaggio   (Impostazioni di crittografia del dispositivo)"
     Write-Host "7.  Microsoft Defender   (Strumenti Microsoft Defender)"
     Write-Host "8.  Punti di Ripristino  (Strumenti Punti di Ripristino)"
-    Write-Host "0.  Esci"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     Write-Host ""
-    $SeP = Read-Host "Inserisci il numero per l'operazione"
+    $SeP = Read-Host " "
 
     switch ($SeP) {
         "0" {
@@ -1101,13 +1383,19 @@ do {
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
     Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     $choice = Read-Host " "
+    while ($choice.Length -gt 5) {
+        .\SYSCOM.PS1
+        exit
+    }
     switch ($choice) {
         "1" { DSK_SO }
         "2" { GestioneReteApplicazioni }
         "3" { SicurezzaProtezione }
-        "0" { exit }
-        "&FS" {
-            Start-Process .\VISO\F11.vbs
+        "&FS" {Start-Process .\VISO\F11.vbs}
+        "VISO" {
+            Set-Location .\VISO
+            Start-Process  .\VISO.BAT
+            cd..
         }
         "&L" {
             Clear-Host
@@ -1126,24 +1414,51 @@ do {
         "&32" { Guida3_2 }
         "&43" { Guida4_3 }
         "&16" { Guida16_9 }
-        "&V0" {
-            INFO
-        }
+        "&V0" {INFO}
         "&PO" { ./PORTABLE.PS1}
         "&TEST" { TEST }
         "&TEST2" { TEST2 }
-        "COLOR" { MENU
-        }
+        "COLOR" { MENU }
         "D32" {Debug3_2}
         "404" {WINGET UNINSTALL SYSCOM}
-        "VISO" {
-            Start-Process .\VISO\VISO.bat
-        }
-        "&CRT" {
-            CRT
-        }
+        "&CRT" {CRT}
+        "APP" {App}
+        "NET" {NET_Menu}
+        "WGLIST" {WGLIST}
+        "WG" {WG}
+        "WIN11" {WINDOWS11}
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+        "0" {
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit
+            Exit   
         }
     }
 

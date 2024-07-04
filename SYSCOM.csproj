@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>TerminalGuiApp</RootNamespace>
+    <Version>0.0.5-beta</Version>
+    <PackageId>SYSCOM</PackageId>
+    <Title>SYSCOM</Title>
+    <Authors>Vittoria Italia Azzurra Libera</Authors>
+    <Copyright>MIT License Copyright (c) 2024 Vittoria</Copyright>
+    <PackageProjectUrl>https://vittoriaalata.github.io/VWS/SYSCOM</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/VittoriaAlata/SYSCOM/</RepositoryUrl>
+    <PackageIcon>SYSCOM_logo.png</PackageIcon>
+    <PackageReleaseNotes>TUI Version</PackageReleaseNotes>
+    <PackAsTool>True</PackAsTool>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <IncludeSymbols>False</IncludeSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Pictures\ico\SYSCOM_logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Terminal.Gui" Version="2.0.0-v2-develop.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

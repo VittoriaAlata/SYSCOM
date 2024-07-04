@@ -38,7 +38,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     # Richiedi l'elevazione dei privilegi per avviare il file batch
    #Start-Process wt.exe -Verb RunAs -ArgumentList "-File `"$PSCommandPath`""
     $command = "echo ciao"
-Start-Process wt.exe -ArgumentList "new-tab", "$env:UserProfile\Desktop\VISO\VISO.BAT" -Verb RunAs
+Start-Process wt.exe -ArgumentList "new-tab", "$env:UserProfile\Desktop\SYSCOM\VISO\VISO.BAT" -Verb RunAs
    #Start-Process wt.exe -ArgumentList "new-tab" -Verb RunAs -WorkingDirectory "$env:ProgramFiles\PowerShell\7\\"
    #Start-Process wt.exe -ArgumentList "new-tab" -Verb RunAs
 } else {
