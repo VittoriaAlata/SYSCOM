@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>TerminalGuiApp</RootNamespace>
     <Version>0.0.5-beta</Version>
     <PackageId>SYSCOM</PackageId>
@@ -18,13 +18,11 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <IncludeSymbols>False</IncludeSymbols>
+    <ApplicationIcon>SYSCOM_logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\Pictures\ico\SYSCOM_logo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <Content Include="SYSCOM_logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
