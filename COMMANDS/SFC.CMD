@@ -1,2 +1,0 @@
-sfc /scannow
-Pause

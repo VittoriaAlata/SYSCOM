@@ -6,3 +6,17 @@ bin
 
 # The .vs folder
 .vs
+
+# The obj vs folder
+obj
+
+# Pdf folder
+storico
+
+#VS files
+*.diagsession
+
+#EXE, MSI, DLL
+*.exe
+*.msi
+*.dll
