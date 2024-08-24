@@ -64,7 +64,6 @@ function DSK_SO {
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
     Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-#    Write-Host "┃10. recdisc.exe     (Strumento di riparazione del disco)        ┃" VA NELLA PARTE DI BACKUP IN UNA NUOVA FUNZIONE NELLA FUNZIONE SECURE
     $MDeSO = Read-Host " "
     switch ($MDeSO) {
         "0" {
@@ -84,11 +83,6 @@ function DSK_SO {
         }
         "3" {
             HARDWARE
-        }
-        "10" {
-            Invoke-Expression "$env:windir\System32\recdisc.exe"
-            Start-Sleep -Seconds 1     
-            DSK_SO
         }
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
@@ -909,14 +903,13 @@ function SicurezzaProtezione {
     Write-Host "┃                                                               ┃"
     Write-Host "┃NUM.   COMANDO                    (DESCRIZIONE COMANDO)        ┃"
     Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       ┃"
-    Write-Host "1.  wscui.cpl            (Sicurezza e manutenzione)"
-#    Write-Host "2.  hotplug.dll          (Rimozione sicura dell`hardware)" Va nella parte HARDWARE DI DSK_SO
-    Write-Host "3.  sigverif.exe         (Verifica firma file)"
-    Write-Host "4.  MRT.exe              (Strumento di rimozione malware Microsoft Windows)"
-    Write-Host "5.  SPP                  (Protezione Sistema)"
-    Write-Host "6.  Imp. di Criptaggio   (Impostazioni di crittografia del dispositivo)"
-    Write-Host "7.  Microsoft Defender   (Strumenti Microsoft Defender)"
-    Write-Host "8.  Punti di Ripristino  (Strumenti Punti di Ripristino)"
+    Write-Host "┃1.  wscui.cpl            (Sicurezza e manutenzione)"
+    Write-Host "2.  sigverif.exe         (Verifica firma file)"
+    Write-Host "3.  MRT.exe              (Strumento di rimozione malware Microsoft Windows)"
+       Write-Host "4. Backup                (Strumentti di Backup"
+    Write-Host "5.  Imp. di Criptaggio   (Impostazioni di crittografia del dispositivo)"
+    Write-Host "6.  Microsoft Defender   (Strumenti Microsoft Defender)"
+    Write-Host "7.  Punti di Ripristino  (Strumenti Punti di Ripristino)"
     Write-Host "┃                                                               ┃"
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
@@ -936,34 +929,61 @@ function SicurezzaProtezione {
             Start-Sleep -Seconds 1
             SicurezzaProtezione
         }
-        "3" {
+        "2" {
             Invoke-Expression "$env:windir\System32\sigverif.exe"
             Start-Sleep -Seconds 1
             SicurezzaProtezione
         }
-        "4" {
+        "3" {
             Invoke-Expression "$env:windir\System32\MRT.exe"
             Start-Sleep -Seconds 1
             SicurezzaProtezione
         }
-        "5" {
-            SystemPropertiesProtection
+        "4" {
             Start-Sleep -Seconds 1
+            BU
             SicurezzaProtezione
         }
-        "6" {
+        "5" {
             control.exe /name Microsoft.DeviceEncryption
             Start-Sleep -Seconds 1
             SicurezzaProtezione
         }
-        "7" {
+        "6" {
             Start-Sleep -Seconds 1
             MSD
             SicurezzaProtezione
         }
-        "8" {
+        "7" {
             Start-Sleep -Seconds 1
             PDR
+            SicurezzaProtezione
+        }
+        Default {
+            Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
+        }
+    }
+}
+
+function BU {
+    Clear-Host
+    Get-Content ".\SYSCOM\Banners\BU"
+    Write-Host "`n`nNUM.   COMANDO         (DESCRIZIONE COMANDO)"
+    Write-Host "------------------------------------------------------------"
+    Write-Host "┃1. recdisc.exe     (Strumento di riparazione del disco)        ┃"
+    Write-Host "0.  Esci"
+    Write-Host ""
+    $MSD = Read-Host "Inserisci il numero per l'operazione"
+    switch ($MSD) {
+        "0" {
+           SicurezzaProtezione 
+        }
+        "" {
+           SicurezzaProtezione 
+        }
+        "1" {
+            Invoke-Expression "$env:windir\System32\recdisc.exe"
+            Start-Sleep -Seconds 1     
             SicurezzaProtezione
         }
         Default {
@@ -1033,6 +1053,7 @@ function PDR {
     Write-Host "1.  Crea Checkpoint      (Crea un nuovo punto di ripristino)"
     Write-Host "2.  Elenca Checkpoint    (Elenca tutti i punti di ripristino)"
     Write-Host "3.  Elimina Checkpoint   (Elimina tutti i punti di ripristino)"
+    Write-Host "4.  SPP                  (Protezione Sistema)"
     Write-Host "0.  Esci"
     Write-Host ""
     $PDR = Read-Host "Inserisci il numero per l'operazione"
@@ -1064,7 +1085,12 @@ function PDR {
             Pause
             PDR
         }
-        Default {
+        "4" {
+            SystemPropertiesProtection
+            Start-Sleep -Seconds 1
+            PDR
+        }
+	Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
         }
     }
