@@ -1,4 +1,5 @@
-# Google App Engine generated folder
-appengine-generated/
+# MSI Build of CLI Version
 MSI/
-CERTS/
+
+# EXE Build of TUI Version
+bin/
