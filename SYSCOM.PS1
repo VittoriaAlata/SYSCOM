@@ -3,13 +3,9 @@
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
 
 if (-not $isAdmin) {
-        $proc = Start-Process pwsh.exe -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs -PassThru
-        $proc.WaitForExit()
+    Add-Type -AssemblyName PresentationFramework
+    [System.Windows.MessageBox]::Show("Per alcuni comandi è preferibile avere privilegi di amministratore.", "Avviso", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information)
 }
-
-# Il resto del tuo script va qui
-
-
 # Definisce una funzione per cambiare il titolo della finestra della console
 function Set-ConsoleTitle {
     param (
@@ -66,15 +62,9 @@ function DSK_SO {
     Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     $MDeSO = Read-Host " "
     switch ($MDeSO) {
-        "0" {
-            .\SYSCOM.PS1 
-        }
-        "" {
-            .\SYSCOM.PS1 
-        }
-        "q" {
-            .\SYSCOM.PS1
-        }
+        "0" {MAIN}
+        "" {MAIN}
+        "q" {MAIN}
         "1" {
             SO
         }
@@ -550,10 +540,8 @@ function GestioneReteApplicazioni {
     Get-Content ".\SYSCOM\Banners\RETEAPP"
     Write-Host "┃                                                               ┃"
     Write-Host "┃                                                               ┃"
-    Write-Host "┃NUM.   COMANDO     (DESCRIZIONE COMANDO)                       ┃"
+    Write-Host "┃NUM.  COMANDO      (DESCRIZIONE COMANDO)                       ┃"
     Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━        ┃"
-    # Write-Host "3.     taskmgr.exe  (Gestione attività)"
-    # Write-Host "4.     msconfig.exe (Config. di sistema)"
     Write-Host "┃1.    App          (Strumenti per pachetti e programmi)        ┃"
     Write-Host "┃2.    NET          (Strumenti per il network e dischi di rete) ┃"
     Write-Host "┃3.    Copilot      (Strumenti Copilot)                         ┃"
@@ -564,12 +552,8 @@ function GestioneReteApplicazioni {
 
     $GRA = Read-Host " "
     switch ($GRA) {
-        "0" {
-           .\SYSCOM.PS1 
-        }
-        "" {
-           .\SYSCOM.PS1 
-        }
+        "0" {MAIN}
+        "" {MAIN}
         "1" {
             App
         }
@@ -579,16 +563,6 @@ function GestioneReteApplicazioni {
         "3" {
             COPILOT
         }
-        # "3" {
-            # Invoke-Expression "$env:windir\System32\taskmgr.exe"
-            # Start-Sleep -Seconds 1     
-            # GestioneReteApplicazioni
-        # }
-        # "4" {
-            # Invoke-Expression "$env:windir\System32\msconfig.exe"
-            # Start-Sleep -Seconds 1     
-            # GestioneReteApplicazioni
-        # }
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
         }
@@ -901,29 +875,24 @@ function SicurezzaProtezione {
     Get-Content ".\SYSCOM\Banners\SECURE"
     Write-Host "┃                                                               ┃"
     Write-Host "┃                                                               ┃"
-    Write-Host "┃NUM.   COMANDO                    (DESCRIZIONE COMANDO)        ┃"
-    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       ┃"
-    Write-Host "┃1.  wscui.cpl            (Sicurezza e manutenzione)"
-    Write-Host "2.  sigverif.exe         (Verifica firma file)"
-    Write-Host "3.  MRT.exe              (Strumento di rimozione malware Microsoft Windows)"
-       Write-Host "4. Backup                (Strumentti di Backup"
-    Write-Host "5.  Imp. di Criptaggio   (Impostazioni di crittografia del dispositivo)"
-    Write-Host "6.  Microsoft Defender   (Strumenti Microsoft Defender)"
-    Write-Host "7.  Punti di Ripristino  (Strumenti Punti di Ripristino)"
+    Write-Host "┃NUM.   COMANDO           (DESCRIZIONE COMANDO)                 ┃"
+    Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━            ┃"
+    Write-Host "┃1.  wscui.cpl            (Sicurezza e manutenzione)		┃"
+    Write-Host "┃2.  sigverif.exe         (Verifica firma file)			┃"
+    Write-Host "┃3.  MRT.exe              (Rimozione malware Microsoft Windows) ┃"
+    Write-Host "┃4.  Backup               (Strumentti di Backup			┃"
+    Write-Host "┃5.  Imp. di Criptaggio   (Crittografia del dispositivo)	┃"
+    Write-Host "┃6.  Microsoft Defender   (Strumenti Microsoft Defender)	┃" 
+    Write-Host "┃7.  Punti di Ripristino  (Strumenti Punti di Ripristino)	┃"
     Write-Host "┃                                                               ┃"
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
     Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-    Write-Host ""
     $SeP = Read-Host " "
 
     switch ($SeP) {
-        "0" {
-           .\SYSCOM.PS1 
-        }
-        "" {
-           .\SYSCOM.PS1 
-        }
+        "0" {MAIN}
+        "" {MAIN}
         "1" {
             Invoke-Expression "$env:windir\System32\wscui.cpl"
             Start-Sleep -Seconds 1
@@ -963,6 +932,21 @@ function SicurezzaProtezione {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
         }
     }
+}
+
+function Sicurezza {
+	Clear-Host
+	Get-Content ""
+	Write-Host "msconfig.exe (configurazione di sistema)"
+	$S=Read-Host"Inserisci il numero dell'operazione"
+	switch ($S) {
+	 "1" {
+            Invoke-Expression "$env:windir\System32\msconfig.exe"
+            Start-Sleep -Seconds 1     
+            GestioneReteApplicazioni
+         }
+
+	}
 }
 
 function BU {
@@ -1387,7 +1371,7 @@ function SITO {
     Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
 }
 
-do {
+function MAIN {
     Clear-Host
     Write-Host ""
     Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
@@ -1462,7 +1446,9 @@ do {
     }
 
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
- 
+ }
+do {
+MAIN
 } while ($true)
 # SIG # Begin signature block
 # MIIJDAYJKoZIhvcNAQcCoIII/TCCCPkCAQExDzANBglghkgBZQMEAgEFADB5Bgor
