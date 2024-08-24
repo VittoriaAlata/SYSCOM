@@ -1,5 +1,8 @@
 # MSI Build of CLI Version
-/.MSI
+MSI
 
 # EXE Build of TUI Version
-/.bin
+bin
+
+# The .vs folder
+.vs
