@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using Terminal.Gui;
 
@@ -33,7 +34,6 @@ class SO
             Height = Dim.Fill(),
             CanFocus = true
         };
-        //            frame.MouseClick += GOTOCHIUDI;
 
         var ASCIIART = new Label(
     "                      ______     ______                        \r\n                     /\\  ___\\   /\\  __ \\                       \r\n                     \\ \\___  \\  \\ \\ \\/\\ \\                      \r\n                      \\/\\_____\\  \\ \\_____\\                     \r\n                       \\/_____/   \\/_____/                     ")
@@ -44,7 +44,45 @@ class SO
             Height = Dim.Fill() - 2,
         };
 
-        frame.Add(ASCIIART); // Aggiungi il pulsante al frame
+        var SFC = new Button("SFC            (Analizza integrità file di sistema)")
+        {
+            X = 5,
+            Y = 8,
+        };
+        SFC.Clicked += GOTOSFC;
+
+        void GOTOSFC(object sender, EventArgs e)
+        {
+            var SFC = new ProcessStartInfo
+            {
+                FileName = "powershell",
+                Arguments = "Start-Process -Verb RunAs powershell -ArgumentList 'sfc /scannow; Pause'",
+                UseShellExecute = true
+            };
+
+            Process.Start(SFC);
+        }
+
+        var DISM = new Button("DISM           (Manutenzione immagini di sistema)")
+        {
+            X = 5,
+            Y = 10,
+        };
+        DISM.Clicked += GOTODISM;
+
+        void GOTODISM(object sender, EventArgs e)
+        {
+            var DISM = new ProcessStartInfo
+            {
+                FileName = "powershell",
+                Arguments = "Start-Process -Verb RunAs powershell -ArgumentList 'dism online cleanup-image restorehealth Loglevel2; Pause'",
+                UseShellExecute = true
+            };
+
+            Process.Start(DISM);
+        }
+
+        frame.Add(ASCIIART, SFC, DISM); // Aggiungi il pulsante al frame
         SO_DIAG.Add(frame); // Aggiungi il frame al dialogo
 
         Application.Run(SO_DIAG);

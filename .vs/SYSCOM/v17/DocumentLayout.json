@@ -3,24 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\pierl\\Desktop\\SYSCOM\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\so.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:so.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\syscom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:syscom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\netapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:netapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\commands\\dism.ps1||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:commands\\dism.ps1||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\commands\\sfc.cmd||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:commands\\sfc.cmd||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\dskso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:dskso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\dsk.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:dsk.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\netapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:netapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\so.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:so.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|c:\\users\\pierl\\desktop\\syscom\\dsk.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6B09098-C4A7-462F-B240-E9C58BC84A90}|SYSCOM.csproj|solutionrelative:dsk.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,11 +38,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "NETAPP.cs",
               "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\NETAPP.cs",
               "RelativeDocumentMoniker": "NETAPP.cs",
@@ -43,59 +51,83 @@
               "ViewState": "AQIAABsAAAAAAAAAAAAAACUAAACEAQAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-04T17:26:02.256Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "DSKSO.cs",
               "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\DSKSO.cs",
               "RelativeDocumentMoniker": "DSKSO.cs",
               "ToolTip": "C:\\Users\\pierl\\Desktop\\SYSCOM\\DSKSO.cs",
               "RelativeToolTip": "DSKSO.cs",
-              "ViewState": "AQIAADwAAAAAAAAAAAAQwFUAAAABAAAA",
+              "ViewState": "AQIAACgAAAAAAAAAAAAuwDwAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-06T11:05:43.901Z",
               "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "SO.cs",
               "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\SO.cs",
               "RelativeDocumentMoniker": "SO.cs",
               "ToolTip": "C:\\Users\\pierl\\Desktop\\SYSCOM\\SO.cs",
               "RelativeToolTip": "SO.cs",
-              "ViewState": "AQIAAB0AAAAAAAAAAAAQwC0AAAAAAAAA",
+              "ViewState": "AQIAADYAAAAAAAAAAAAqwEsAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-06T13:40:12.349Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DISM.PS1",
+              "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\COMMANDS\\DISM.PS1",
+              "RelativeDocumentMoniker": "COMMANDS\\DISM.PS1",
+              "ToolTip": "C:\\Users\\pierl\\Desktop\\SYSCOM\\COMMANDS\\DISM.PS1",
+              "RelativeToolTip": "COMMANDS\\DISM.PS1",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-08-23T20:16:03.131Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "DSK.cs",
-              "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\DSK.cs",
-              "RelativeDocumentMoniker": "DSK.cs",
-              "ToolTip": "C:\\Users\\pierl\\Desktop\\SYSCOM\\DSK.cs",
-              "RelativeToolTip": "DSK.cs",
-              "ViewState": "AQIAAB0AAAAAAAAAAAAAwCMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-07T08:36:16.876Z"
+              "Title": "SFC.CMD",
+              "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\COMMANDS\\SFC.CMD",
+              "RelativeDocumentMoniker": "COMMANDS\\SFC.CMD",
+              "ToolTip": "C:\\Users\\pierl\\Desktop\\SYSCOM\\COMMANDS\\SFC.CMD",
+              "RelativeToolTip": "COMMANDS\\SFC.CMD",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG7SURBVDhPzZTNSxtBHEBfPGipJ\u002B2iGFBjzJqu4nda0EO99CaCeBOEQlsotCCUakMO6sWrBz8QlZaWInjxXyjtQbNKwCqYUGObRKIosfFSKTazcXsQQWZXJOqhD4aB37x5cxu4TUzTlEc3xhHwD8bBdMkH18ORyLtOrLOr23YH00XAP2BmMplbWQH/gJl34WELuweHfF5eYz91JB9dim3wz8lf9G8Rfib2\u002BH18TGQ7xnJog1T66rBtMByNkzpMc3qaxdegkc0a7Ozuk9w7kFULtsEmzYNhGHhc5VRVOPG6KzEMQb2myqoF22A4GkOIDOGtH2zHdtiIRBFC8DUYklULtsGyUoWyEgUhBF\u002BWVskaBiVKEW2tjbJqwTZYqhTT0dZKg6ZypyCfWq\u002Bbx4/aiSeTvPIPsb4Z5lc6LV\u002BDy4LnVJY76e3pxFtdxeS7j8x8mKeuxsP49Cxz7z/JOlwVvEitWk1djYeXz55Qr91HVd2yArkEI9\u002B3WA2FGJuYIqivENR1WYFcgk/7eul/8RxdX\u002BHt635GR4ZlBXIJKveK8bU0s7gwz8MHPgoL78oKnH1fb\u002BLgyPnHscdMyJP/j39Wh9oGPXeiTgAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-08-23T19:57:43.151Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "SYSCOM.cs",
               "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\SYSCOM.cs",
               "RelativeDocumentMoniker": "SYSCOM.cs",
               "ToolTip": "C:\\Users\\pierl\\Desktop\\SYSCOM\\SYSCOM.cs",
               "RelativeToolTip": "SYSCOM.cs",
-              "ViewState": "AQIAAK8AAAAAAAAAAAAlwLoAAAAhAAAA",
+              "ViewState": "AQIAAJcAAAAAAAAAAAAQwKoAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-04T19:18:16.074Z",
+              "WhenOpened": "2024-07-15T21:53:09.758Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DSK.cs",
+              "DocumentMoniker": "C:\\Users\\pierl\\Desktop\\SYSCOM\\DSK.cs",
+              "RelativeDocumentMoniker": "DSK.cs",
+              "ToolTip": "C:\\Users\\pierl\\Desktop\\SYSCOM\\DSK.cs",
+              "RelativeToolTip": "DSK.cs",
+              "ViewState": "AQIAABcAAAAAAAAAAAAAwCMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-07T08:36:16.876Z"
             }
           ]
         }

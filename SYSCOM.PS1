@@ -1,24 +1,10 @@
 ﻿$OutputEncoding = [System.Text.Encoding]::UTF8
 
-Add-Type -AssemblyName System.Windows.Forms
-
-function ADMINMESSAGE {
-    [System.Windows.Forms.MessageBox]::Show("Per favore, avvia il programma come amministratore.", "Permessi di amministratore richiesti", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error) | Out-Null
-}
-
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
 
 if (-not $isAdmin) {
-    try {
         $proc = Start-Process pwsh.exe -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs -PassThru
         $proc.WaitForExit()
-        if ($proc.ExitCode -ne 0) {
-            ADMINMESSAGE
-        }
-    } catch {
-        ADMINMESSAGE
-    }
-    Exit
 }
 
 # Il resto del tuo script va qui
@@ -315,7 +301,7 @@ function HARDWARE {
     Write-Host "┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       ┃"
     Write-Host "┃1. dxdiag.exe     (Strumento di diagnostica Direct X)          ┃" 
     Write-Host "┃2. Report         (Strumenti di diagnostica componenti)        ┃"
-    Write-Host "┃                                                               ┃"
+    Write-Host "┃3. hotplug.dll    (Rimozione sicura dell`hardware)              ┃"
     Write-Host "┃                                                               ┃"
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
@@ -338,6 +324,11 @@ function HARDWARE {
         }
         "2"{
             REPORT
+        }
+        "3" {
+            Invoke-Expression "$env:windir\System32\RunDll32.exe shell32.dll,Control_RunDLL hotplug.dll"
+            Start-Sleep -Seconds 1
+            SicurezzaProtezione
         }
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
@@ -945,11 +936,6 @@ function SicurezzaProtezione {
             Start-Sleep -Seconds 1
             SicurezzaProtezione
         }
-        "2" {
-            Invoke-Expression "$env:windir\System32\RunDll32.exe shell32.dll,Control_RunDLL hotplug.dll"
-            Start-Sleep -Seconds 1
-            SicurezzaProtezione
-        }
         "3" {
             Invoke-Expression "$env:windir\System32\sigverif.exe"
             Start-Sleep -Seconds 1
@@ -1363,6 +1349,18 @@ function CRT {
         Get-Content ".\SYSCOM\Banners\CRT_COLORS.utf8ans"
 }
 
+function SITO {
+    Clear-Host
+    Write-Host "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┃1.  Download       (Scarica l'ultima versione di SYSCOM CLI)   ┃"
+    Write-Host "┃2.  Manuale        (Scopri come installare e utilizzare SYSCOM)┃"
+    Write-Host "┃                                                               ┃"
+    Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
+    Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
+    Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+}
+
 do {
     Clear-Host
     Write-Host ""
@@ -1376,7 +1374,7 @@ do {
     Write-Host "┃`t3. Sicurezza e Protezione                               ┃"
     Write-Host "┃                                                               ┃"
     Write-Host "┃ &FS. Schermo Intero | &32. Imposta la risoluzione | &V0. Info ┃"
-    Write-Host "┃`t0. Esci \ \ \ \ \ \ \ \ \ \ 404. Disintalla SYSCOM      ┃"
+    Write-Host "┃`tQ. Esci \ \ \ \ \ \ \ \ \ \ 404. Disintalla SYSCOM      ┃"
     Write-Host "┃                                                               ┃"
     Write-Host $festa
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
@@ -1427,41 +1425,67 @@ do {
         "WGLIST" {WGLIST}
         "WG" {WG}
         "WIN11" {WINDOWS11}
+        "SITO" {SITO}
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
         }
-        "0" {
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit
-            Exit   
+        "Q" {
+            exit
+            return $false
         }
     }
 
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
  
 } while ($true)
+# SIG # Begin signature block
+# MIIJDAYJKoZIhvcNAQcCoIII/TCCCPkCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCPzpfU8kYuWuXi
+# iEpz5TAOPeCZ/NuKFWkPJaBXIn80H6CCBVowggVWMIIDPqADAgECAhAx+LahzdtA
+# skQAuoaJx6JUMA0GCSqGSIb3DQEBCwUAMEIxETAPBgNVBAMMCFZpdHRvcmlhMS0w
+# KwYJKoZIhvcNAQkBFh52aXR0b3JpYWFsYXRhYXp6dXJyYUBnbWFpbC5jb20wIBcN
+# MjQwNjEwMTU1MDI5WhgPMjEzMTEyMzEyMjAwMDBaMEIxETAPBgNVBAMMCFZpdHRv
+# cmlhMS0wKwYJKoZIhvcNAQkBFh52aXR0b3JpYWFsYXRhYXp6dXJyYUBnbWFpbC5j
+# b20wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCasjtcoSKdyM6lvmgw
+# 6EO5EwacgRN2b8nXK3AYyEYSR2JK5Ru/xBmmEvPs88lnxuqAFYKiJ1MR1gKr2R1/
+# HifqmapvlQCiXLbEq9/tc47xezxdaLAY15U3mTFNMb7yanh+/IamEHi97Ofr/Tnk
+# uNZ++s+Gy/MU14OZMF6S44ZaKa0SCcg6TvhgH2pgiFXoZY/i+94IVTqn1ZRQNhP3
+# 2o6B6EJZ9x5g0szbxvzFjTikER3lqk803NP2E6M/cMpwMYYlaUc2H0vvns6S9kEH
+# c4fASunUgJnPUma8TF3ddANPrSW74qNXxWezV2/FG/G+TMvk8IDxjNUryo82Fsxk
+# eoPvUViiJ16YgAE3B6oLdM/Of0Q+jHimGJ6C8Zu+u6JxLCWvTNdpBPH6Unnu5I7l
+# QL1Wg+uuphLOLTp5FRHU2zmmwzwiu12rZiKmfF9Wwy7GK5D4d2eJzHFdDzsRpWU6
+# QNdg/GY5LPDDm+qwmvPPRSyZvoTMfNdMPnBm1zO/u+iPPdoOhRK1ju+EgPaB5C4L
+# rww+hxxVYzNt/zqtH1kKpFMGXyukEWVxLMdCTKRG6hZNO3za5gT7pxf24dGIkHJJ
+# H0OtloKHEGDZRDAjYEmdE1RX5jivlhr0fRhoXmDHMXQPNyGYoLNt4R9UrwCB6ADV
+# HQ2XZrG1AlXd4pr7nvZxWHVgAQIDAQABo0YwRDAOBgNVHQ8BAf8EBAMCBaAwEwYD
+# VR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0OBBYEFPnBBrv2wCDEew7wFaehvfdafdIO
+# MA0GCSqGSIb3DQEBCwUAA4ICAQCY4WLzeoc9ubdvUDJW75ohIYkZ9iTTxg84LwUY
+# pTnjh1UZOS7j36hUYv7EAi+LpTXrzB0yPn4wzNL9i+/XZon2IMlFd3Zu+8Djo/J+
+# /f6cVE3pw8+tE+FRYhnC2EBivK0pLu4aXM3wPc5b/b/58c5yRWo97UYIX3mRBxVS
+# 13Kf6t7qewWqvoJ/nSbRiQb9q3jeJ5yNCxUxxQVZ11FGV9kbPboutd/cbbdJYB0M
+# +TmSOJ2ivE1XfWfuktlTDkSZauVUv8l+aM8T4NMlpG+NDf+Ark3IxkPMxPMLE9Rs
+# 3Mrsqq4gDfxj1jOcfyajvY8tqk+K/tfOPPWztXFeoQjofw58YL1/XNmgJWXbuGXk
+# Mn6jpQYNT4SHiCkDVIp/QD/U0kJ77XFTyIm62T3UCZyt4yJkMwZFSg3+JW0CqyUU
+# fb1WSkURY7HKjIbuI6ha5Rq/ZSFyji9ncCWpzH8YeWvBu2Y1QiYvaf06x31//kwR
+# 6ukAyvy3FxX6d2DnbS4N2j97nsONL/Bm2lrIaYkwJVTLqzNBwjd1HluY87IkaM6L
+# 2hOWAB/obWA0pM3RfZR8xiu7j6CPYRE7xvdJolkletOTSS5QbhtMFKddqCmh72xy
+# vlFQan2rquR6ASdW2YLJU7wb6ImnfeJLQzauvTCN5N+AbeyzFSpF+lD1d4QPwYGT
+# rzgl1zGCAwgwggMEAgEBMFYwQjERMA8GA1UEAwwIVml0dG9yaWExLTArBgkqhkiG
+# 9w0BCQEWHnZpdHRvcmlhYWxhdGFhenp1cnJhQGdtYWlsLmNvbQIQMfi2oc3bQLJE
+# ALqGiceiVDANBglghkgBZQMEAgEFAKCBhDAYBgorBgEEAYI3AgEMMQowCKACgACh
+# AoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAM
+# BgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCD6FwwYqJBTCj4Mx4UuHvh4Fl5h
+# sBMoK6dPMAb5Urq81jANBgkqhkiG9w0BAQEFAASCAgCX181tUu8RIFGJFkxFdRIb
+# 2r1306CQH5uQsxAWkqfkOqRjueAeBpBpZA48FYq9xP2Z2IK4TKPA8ssCCOSD4bMn
+# xlLtOVJHtbgRv4rWtPClM+jIwEsexZlnfLC63EiE+x00VvNGz3EIpV+rCuqlYgDR
+# OinfIiMkBnhBbGJ/Hn+02smkoUn6hBke3YMo3OWnaOBV9mea385rThjzaNbiDk4D
+# 4ZmdO7wGxjI37Twxt1EOWr1ONZvgImcE7sg6gIpezTyQD8nYAESyRF5MWwy4cNye
+# kb0CWcnV2wifOom92v03G4qkgMLUoUCFsfuIACTsnfp3KMkPQVC8pCV/xtSvZpa9
+# dh09cVouKcA1fVR3E0pnsvEtOljKbbKHa5jHNhbyw1llsUBCUxqECpm3vIN0zTfs
+# y+Re0RS/HjVDVWYaIUcKDr3I59wsH8ix8dS4RR83qRUfGxVBuGfMcpAe5R5fKULz
+# yaAZ9Nn7oV3cdrnFPBRLbsd/MIVm1NQBpcx4Gb6nHaMSxB916XLuMyJ4oo6G5zm0
+# zi4YK8r5vKTTDOgdKXZ9c9Bga6AvAdCEIGYpdpLD6sQ85Eg2FyVJyvHfaR+A6eeo
+# VnFY29ETyPx24WatlansW7Ol6D8AUO0c58Zy+ezCKIQ7RwulCzZFpjBQPJdqWMAI
+# TimvjNUGoOtyUCf49POjog==
+# SIG # End signature block

@@ -149,8 +149,8 @@ class SYSCOM
         {
             var psi = new System.Diagnostics.ProcessStartInfo()
             {
-                FileName = "powershell",
-                Arguments = $"cd C:\\Users\\pierl\\Desktop\\SYSCOM\\; .\\SYSCOM.PS1",
+                FileName = "pwsh",
+                Arguments = $".\\SYSCOM.PS1",
                 UseShellExecute = true,
             };
             var process = System.Diagnostics.Process.Start(psi);
@@ -168,13 +168,13 @@ class SYSCOM
             var psi = new System.Diagnostics.ProcessStartInfo()
             {
                 FileName = "powershell",
-                Arguments = $"cd C:\\Users\\pierl\\Desktop\\SYSCOM\\VISO; .\\VISO.BAT",
+                Arguments = $"cd .\\VISO; .\\VISO.BAT",
                 UseShellExecute = true,
             };
             var process = System.Diagnostics.Process.Start(psi);
         }
 
-        var entry = new TextField("")
+        /*var entry = new TextField("")
         {
             X = 1,
             Y = Pos.Bottom(menuText) + 3,
@@ -229,9 +229,9 @@ class SYSCOM
                   labelFesta.Text = "Inserisci un'opzione valida.";
                   break;
           }
-        }
+        }*/
 
-        frame.Add(menuText, DskSo, NetApp, Secure, Info, SYSCOM, VISO, entry, labelFesta, ExecButton);
+        frame.Add(menuText, DskSo, NetApp, Secure, Info, SYSCOM, VISO /*entry, labelFesta, ExecButton*/);
         win.Add(frame, subTitle);
         top.Add(win);
 

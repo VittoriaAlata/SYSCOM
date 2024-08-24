@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("MIT License Copyright (c) 2024 Vittoria")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.5.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.5-beta+54248278c1b6dbfa3caa7343a07e29245fccbf53")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.5-beta+74367732d76ee8b99c27ba85516724577dad4728")]
 [assembly: System.Reflection.AssemblyProductAttribute("SYSCOM")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SYSCOM")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.0.5.0")]
