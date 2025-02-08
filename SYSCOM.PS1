@@ -36,7 +36,7 @@ function CTRLPause {
 
 # Ottieni la data corrente
 $currentDate = Get-Date
-$festa = "┃                           &L. Licenza                         ┃"
+$festa = "┃                                                               ┃"
 # Controlla se il giorno e il mese correnti corrispondono a quelli specificati
 if ($currentDate.Day -eq 2 -and $currentDate.Month -eq 6) {
     $festa = "┃             Buona festa della Repubblica Italiana             ┃"
@@ -62,18 +62,18 @@ function DSK_SO {
     Write-Host "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     $MDeSO = Read-Host " "
     switch ($MDeSO) {
-        "0" {MAIN}
-        "" {MAIN}
-        "q" {MAIN}
-        "1" {
-            SO
-        }
-        "2" {
-            DSK
-        }
-        "3" {
-            HARDWARE
-        }
+    {$_ -eq "0" -or $_ -eq "" -or $_ -eq "q"} {
+        MAIN
+    }
+    {$_ -eq "1" -or $_ -eq "S" -or $_ -eq "s"} {
+        SO
+    }
+    {$_ -eq "2" -or $_ -eq "D" -or $_ -eq "d"} {
+        DSK
+    }
+    {$_ -eq "3" -or $_ -eq "H" -or $_ -eq "h"} {
+        HARDWARE
+    }
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
         }
@@ -1384,8 +1384,8 @@ function MAIN {
     Write-Host "┃`t3. Sicurezza e Protezione                               ┃"
     Write-Host "┃                                                               ┃"
     Write-Host "┃ &FS. Schermo Intero | &32. Imposta la risoluzione | &V0. Info ┃"
+    Write-Host "┃       &VISO. VISO | &AU. Autrice ANSI art | &L. Licenza       ┃"
     Write-Host "┃`tQ. Esci \ \ \ \ \ \ \ \ \ \ 404. Disintalla SYSCOM      ┃"
-    Write-Host "┃                                                               ┃"
     Write-Host $festa
     Write-Host "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫"
     Write-Host "┃ Inserisci il numero per l'operazione                          ┃"
@@ -1400,7 +1400,7 @@ function MAIN {
         "2" { GestioneReteApplicazioni }
         "3" { SicurezzaProtezione }
         "&FS" {Start-Process .\VISO\F11.vbs}
-        "VISO" {
+        "&VISO" {
             Set-Location .\VISO
             Start-Process  .\VISO.BAT
             cd..
@@ -1420,22 +1420,22 @@ function MAIN {
             exit
         }
         "&32" { Guida3_2 }
-        "&43" { Guida4_3 }
-        "&16" { Guida16_9 }
+        "&43" { Guida4_3 } #Inutilizzato
+        "&16" { Guida16_9 } #Inutilizzato
         "&V0" {INFO}
-        "&PO" { ./PORTABLE.PS1}
-        "&TEST" { TEST }
-        "&TEST2" { TEST2 }
-        "COLOR" { MENU }
-        "D32" {Debug3_2}
-        "404" {WINGET UNINSTALL SYSCOM}
-        "&CRT" {CRT}
-        "APP" {App}
-        "NET" {NET_Menu}
-        "WGLIST" {WGLIST}
-        "WG" {WG}
-        "WIN11" {WINDOWS11}
-        "SITO" {SITO}
+        "&PO" { ./PORTABLE.PS1} #Non Funzionante
+        "&TEST" { TEST } #Test Interno righe e colonne 
+        "&TEST2" { TEST2 } #Test Interno MAIN posizionamento
+        "COLOR" { MENU } #Test Interno MAIN COLORATO
+        "D32" {Debug3_2} #DEBUG 3:2 senza guida
+        "404" {WINGET UNINSTALL SYSCOM} #DISINTALLA SYSCOM
+        "&CRT" {CRT} #CRT NO SIGBNAL ANSI ART
+        "APP" {App} #DEBUG INTERNO per verificare schermate
+        "NET" {NET_Menu} #DEBUG INTERNO per verificare schermate
+        "WGLIST" {WGLIST} #DEBUG INTERNO per verificare schermate
+        "WG" {WG} #DEBUG INTERNO per verificare schermate
+        "WIN11" {WINDOWS11} #DEBUG INTERNO per verificare schermate
+        "SITO" {SITO} #DEBUG INTERNO per verificare schermate
         Default {
             Write-Host "━━━━━━━━━━━━━━━━━━INSERISCI━UN━OPERAZIONE━VALIDA━━━━━━━━━━━━━━━━━" -ForegroundColor Red
         }
